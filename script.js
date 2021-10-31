@@ -52,6 +52,8 @@ class Enemy{
         this.height=48;
         this.speedX=1.1;
         this.speedY= Math.floor(Math.random()*5);
+        this.appearNewInterval = 100
+        this.enemyTimer = 0
     }
 }
 
@@ -131,22 +133,36 @@ const moveBullet =()=>{
     //bullet.y = player1.y - bullet.height
 }
 
-const updateMoveBullet = () =>
-    bullet.x += bullet.speedX
-    bullet.y += bullet.speedY
-
-// Shooting
-
-
 
 // Enemy1
+
+
+let arrayOfEnemies1 = []
+
+const createEnemies1 = () => {
+    for (let i = 0; i < 5; i++){
+        arrayOfEnemies1.push(new Enemy())
+    }
+    
+}   
+
+createEnemies1()
+console.log(arrayOfEnemies1)
+
 const drawEnemy1 = ()=>{
+    arrayOfEnemies1.forEach((Enemy)=>{
     ctx.drawImage(loadedImages.bluefly, enemy.x, enemy.y, enemy.whidth, enemy.height)
-}
+    }
+    )}
+
+    console.log(drawEnemy1())
+
 const moveEnemy1 = ()=>{
     enemy.x += Math.floor(Math.random(enemy.speedX)+0.5)
     enemy.y += Math.floor(Math.random()*(enemy.speedY)+1)
  }
+
+
 
 // Enemy2 
 const drawEnemy2 = ()=>{
@@ -217,10 +233,8 @@ drawBullet()
 //drawEnemy2()
 movePlayer1()
 moveBullet()
-updateMoveBullet()
 moveEnemy1()
 //moveEnemy2()
 moveBackground()
 requestAnimationFrame(startGame)
 }
-
