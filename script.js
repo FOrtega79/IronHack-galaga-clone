@@ -44,10 +44,12 @@ class Player1 {
     }
 }
 
+
+
 class Enemy{
     constructor(){
         this.x= Math.floor(Math.random()*600); 
-        this.y= Math.floor(Math.random()*420);
+        this.y= Math.floor(Math.random()*-100);
         this.whidth=45;
         this.height=48;
         this.speedX=1.1;
@@ -56,6 +58,8 @@ class Enemy{
         this.enemyTimer = 0
     }
 }
+
+
 
 class Background{
     constructor(){
@@ -80,6 +84,16 @@ class Bullet{
 }
 
 
+class GreenEnemy extends Enemy{
+    constructor(){
+        super()
+        this.x = 299
+        this.greenenemy = loadedImages.greenfly
+    }
+}
+
+
+
 const player1 = new Player1()
 
 const enemy = new Enemy()
@@ -87,6 +101,8 @@ const enemy = new Enemy()
 const bkg  = new Background()
 
 const bullet = new Bullet()
+
+const greenEnemy = new GreenEnemy()
 
 
 
@@ -100,10 +116,20 @@ const drawBackground = ()=>{
 const drawPlayer1 = ()=>{
     ctx.drawImage(loadedImages.player1, player1.x, player1.y, player1.whidth, player1.height)
 }
+
+
+const Inbounds = () =>{
+    if (player1.x > 670){
+        player1.x = 670
+    }
+    else if(player1.x < -15){
+        player1.x = -15
+    }
+}
 const movePlayer1 = ()=>{
     player1.x += player1.speedX
+    Inbounds()
 }
-
 
 // Bullet
 const drawBullet =()=>{
@@ -141,23 +167,20 @@ let arrayOfEnemies1 = []
 
 const createEnemies1 = () => {
     for (let i = 0; i < 5; i++){
-        arrayOfEnemies1.push(new Enemy())
+        const enemyOne = new Enemy()
+        arrayOfEnemies1.push(enemyOne)
     }
     
 }   
-
 createEnemies1()
 console.log(arrayOfEnemies1)
 
 const drawEnemy1 = ()=>{
-    arrayOfEnemies1.forEach((Enemy)=>{
-    ctx.drawImage(loadedImages.bluefly, enemy.x, enemy.y, enemy.whidth, enemy.height)
-    }
-    )}
+    arrayOfEnemies1.forEach((enemyOne) => {
+        ctx.drawImage(loadedImages.bluefly, enemy.x, enemy.y, enemy.whidth, enemy.height)
+})}
 
-    console.log(drawEnemy1())
-
-const moveEnemy1 = ()=>{
+const moveEnemy1 = (arrayOfEnemies1)=>{
     enemy.x += Math.floor(Math.random(enemy.speedX)+0.5)
     enemy.y += Math.floor(Math.random()*(enemy.speedY)+1)
  }
@@ -166,12 +189,12 @@ const moveEnemy1 = ()=>{
 
 // Enemy2 
 const drawEnemy2 = ()=>{
-    ctx.drawImage(loadedImages.greenfly, enemy.x, enemy.y, enemy.whidth, enemy.height)
+    ctx.drawImage(loadedImages.greenfly, greenEnemy.x, greenEnemy.y, greenEnemy.whidth, greenEnemy.height)
 }  
 
 const moveEnemy2 = ()=>{
-    enemy.x += Math.floor(Math.random(enemy.speedX)+1)
-    enemy.y += Math.floor(Math.random()*(enemy.speedY)+0.5)
+    greenEnemy.x += Math.floor(Math.random()*(greenEnemy.speedX)-0.2)
+    greenEnemy.y += Math.floor(Math.random()*(greenEnemy.speedY)+1)
 }
 
 
@@ -180,6 +203,10 @@ const moveBackground =()=>{
     bkg.y += bkg.speedY
     
 }
+
+// const loopBkg () => {
+//     if 
+// }
 
 // Clear the Canvas
 const clearCanvas =() => {
@@ -230,11 +257,11 @@ drawBackground()
 drawPlayer1()
 drawEnemy1()
 drawBullet()
-//drawEnemy2()
+drawEnemy2()
 movePlayer1()
 moveBullet()
 moveEnemy1()
-//moveEnemy2()
+moveEnemy2()
 moveBackground()
 requestAnimationFrame(startGame)
 }
