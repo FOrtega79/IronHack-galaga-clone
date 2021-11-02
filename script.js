@@ -2,10 +2,10 @@
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
-const NumberOfEnemies = Math.random()* 20 +1
+const NumberOfEnemies = Math.random()* 10 +1
 let arrayOfEnemies = []
 let arrayOfBullets = []
-
+let arrayOfExplosions = []
 
 //Load images
 const loadedImages = {}
@@ -17,7 +17,8 @@ const imageLinks = [
     {link:"/images/green-fly.png", name:'greenfly'}, 
     {link: "/images/bullet.png", name:'bullet'},
     {link: "/images/explosion-player1.png", name: 'player1dead'},
-    {link: "/images/gameover.png", name: 'gameover'} 
+    {link: "/images/xplo-sprites.png", name: 'xplosion'},
+    {link: "/images/game-over-splash.png", name: 'gameover'} 
 ]
 // Loaded Images counter
 let counterForLoadedImages = 0
@@ -55,21 +56,22 @@ class Player1 {
     }
 }
 
-
-
 class Enemy{
     constructor(){
-        this.x= Math.random()*500; 
-        this.y= Math.random()*-1;
+        this.x= Math.random()*550; 
+        this.y= 1
         this.whidth=32.5;
         this.height=34;
-        this.speedX= Math.random()* 4 -2;
-        this.speedY=1;
+        this.speedX= 2    //Math.random()* -1;
+        this.speedY= 4     //Math.random()* 1;
+        this.angle = 0
+        this.angleSpeed = 1
         this.toDelete=false
+        //this.curve = Math.random() * 200 + 50
     }
-    update(){
-        this.x += this.speedX
-        this.y += this.speedY
+    update(){  
+        this.x += Math.random()*5 - 2.5
+        this.y += Math.random()*5 - 1
     }
 
     draw(){
@@ -125,13 +127,13 @@ class Bullet{
     }
 }
 
+
 const drawBullets = () => {
 arrayOfBullets.forEach((bullet) =>{
     bullet.draw()
     bullet.update()
 })
 }
-
 
 const player1 = new Player1()
 const blueEnemy = new Enemy()
@@ -146,6 +148,7 @@ const endGame = () =>{
     cancelAnimationFrame()
 }
 
+let score = 0
 
 // Draw with in game values
 const drawBackground = ()=>{
@@ -165,7 +168,7 @@ const Inbounds = () =>{
 
 const createBlueEnemies = setInterval(() => {
     for (let i = 0; i < NumberOfEnemies; i++)
-    {arrayOfEnemies.push(new Enemy())}}, 3000)   
+    {arrayOfEnemies.push(new Enemy())}}, 2000)   
 
 //createBlueEnemies()
 console.log(createBlueEnemies)
@@ -196,10 +199,13 @@ const checkCollision = () => {
                 bullet.x + bullet.whidth < enemy.x ||
                 bullet.y > enemy.y + enemy.height ||
                 bullet.y + bullet.height < enemy.y){
+
                      
                 }else{
                     enemy.toDelete = true 
                     bullet.toDelete = true
+                    score++
+                    document.getElementById('score').innerText = score
                 }
         })
     })
@@ -227,14 +233,14 @@ document.addEventListener("keydown", (event)=>{
       player1.speedX = 0
     }
   })
-  document.addEventListener("keydown", (event)=>{
-      if(event.key === " "){
-        console.log("spacebar pressed")  
+   document.addEventListener("keydown", (event)=>{
+      if(event.key === " "){  
         arrayOfBullets.push(new Bullet(player1.x + 18, player1.y - 15))
-          
       }
   })
 
+
+  
 function startGame(){
 clearCanvas()
 
