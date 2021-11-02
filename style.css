@@ -20,6 +20,10 @@ body{
     
 }
 
+#game-over{
+    visibility: hidden;
+}
+
 #game-intro{
     width: 250px;
     display: flex;
