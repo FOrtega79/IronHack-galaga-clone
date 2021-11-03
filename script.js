@@ -6,6 +6,20 @@ const NumberOfEnemies = Math.random()* 10 +1
 let arrayOfEnemies = []
 let arrayOfBullets = []
 let arrayOfExplosions = []
+let animationFrameID = null
+let createBlueEnemiesIntervalID;
+let gameOver = false
+
+
+const soundTrack = new Audio("/sounds/8-bit-looping.flac")
+soundTrack.volume = 0.05
+soundTrack.preload ='auto'
+soundTrack.load()
+
+const player1shoot = new Audio("/sounds/FighterShot.mp3")
+player1shoot.volume = 0.3
+player1shoot.preload = 'auto'
+player1shoot.load()
 
 //Load images
 const loadedImages = {}
@@ -88,10 +102,8 @@ class Enemy{
             this.y + this.height < player1.y){
              
             }else{
-            ctx.drawImage(loadedImages.player1dead, player1.x - 5, player1.y - 5, player1.whidth +10, player1.height + 10)
-            setTimeout(() => {
-                endGame()
-            }, 1000); 
+            ctx.drawImage(loadedImages.player1dead, player1.x - 18, player1.y - 5, player1.whidth +36, player1.height + 20)
+            endGame() 
             }
     }   
 }
@@ -142,11 +154,7 @@ const bkg2 = new Background(0, 898)
 const greenEnemy = new Enemy()
 const bullet = new Bullet()
 
-const endGame = () =>{
-    clearCanvas()
-    ctx.drawImage(loadedImages.gameover, 0, 0, 697, 898)
-    cancelAnimationFrame()
-}
+
 
 let score = 0
 
@@ -166,9 +174,16 @@ const Inbounds = () =>{
     }
 }
 
-const createBlueEnemies = setInterval(() => {
-    for (let i = 0; i < NumberOfEnemies; i++)
-    {arrayOfEnemies.push(new Enemy())}}, 2000)   
+const createBlueEnemies = () => {
+
+    createBlueEnemiesIntervalID = setInterval(() => {
+        for (let i = 0; i < NumberOfEnemies; i++)
+        {arrayOfEnemies.push(new Enemy())}}, 2000) 
+}
+
+
+
+   
 
 //createBlueEnemies()
 console.log(createBlueEnemies)
@@ -234,14 +249,39 @@ document.addEventListener("keydown", (event)=>{
     }
   })
    document.addEventListener("keydown", (event)=>{
-      if(event.key === " "){  
+      if(event.key === " " && !gameOver){  
         arrayOfBullets.push(new Bullet(player1.x + 18, player1.y - 15))
+        player1shoot.play()
       }
+    
   })
 
+ 
 
-  
-function startGame(){
+  const endGame = () =>{
+    arrayOfEnemies = []
+    arrayOfBullets = []
+    arrayOfExplosions = []
+    // player1shoot.pause()
+    gameOver = true
+    //limpiar arrays
+    clearInterval(createBlueEnemiesIntervalID)
+    setTimeout(() => {
+        cancelAnimationFrame(requestAnimationFrameID)
+        clearCanvas()
+        soundTrack.pause()
+        ctx.drawImage(loadedImages.gameover, 0, 0, 697, 898)
+    }, 500)
+}
+
+const startGame = () => {
+createBlueEnemies()
+gameLoop()
+gameOver = false
+}
+
+function gameLoop(){
+soundTrack.play()
 clearCanvas()
 
 drawBackground()
@@ -271,5 +311,5 @@ drawBullets()
 
 moveBackground()
 
-requestAnimationFrame(startGame)
+    requestAnimationFrameID = requestAnimationFrame(gameLoop)
 }
