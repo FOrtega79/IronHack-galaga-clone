@@ -69,11 +69,22 @@ body{
 #show-score{
     color: white;
     font-size: 24px;
-    margin-top: -280px;
+    margin-top: -200px;
     margin-left: 1020px;
 }
 
 #score{
     color: yellow;
+    font-size: 32px;
+}
+
+#show-ratio{
+    color:white;
+    font-size: 24px;
+    margin-left: 1020px;
+}
+
+#ratio{
+    color: rgb(0, 255, 21);
     font-size: 32px;
 }

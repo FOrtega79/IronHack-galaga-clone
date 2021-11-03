@@ -8,6 +8,7 @@ let arrayOfBullets = []
 let arrayOfExplosions = []
 let animationFrameID = null
 let createBlueEnemiesIntervalID;
+let SpaceKeyPressed = 0
 let gameOver = false
 
 
@@ -31,7 +32,7 @@ const imageLinks = [
     {link:"/images/green-fly.png", name:'greenfly'}, 
     {link: "/images/bullet.png", name:'bullet'},
     {link: "/images/explosion-player1.png", name: 'player1dead'},
-    {link: "/images/xplo-sprites.png", name: 'xplosion'},
+    {link: "/images/xplo-sprites.png", name: 'xplosion'}, 
     {link: "/images/game-over-splash.png", name: 'gameover'} 
 ]
 // Loaded Images counter
@@ -158,11 +159,11 @@ const bullet = new Bullet()
 
 let score = 0
 
+
 // Draw with in game values
 const drawBackground = ()=>{
     ctx.drawImage(loadedImages.background, bkg.x, bkg.y, bkg.whidth, bkg.height)
-    ctx.drawImage(loadedImages.background2, bkg2.x, bkg2.y, bkg.whidth, bkg.height)
-    
+      
 }
 
 const Inbounds = () =>{
@@ -186,7 +187,7 @@ const createBlueEnemies = () => {
    
 
 //createBlueEnemies()
-console.log(createBlueEnemies)
+//console.log(createBlueEnemies)
 
 // Enemy2 
 const drawEnemy2 = ()=>{
@@ -198,6 +199,11 @@ const moveEnemy2 = ()=>{
 }
 // Background
 const moveBackground =()=>{
+    if(bkg.x === 898){
+        ctx.drawImage(loadedImages.background2, bkg2.x, bkg2.y, bkg2.whidth, bkg2.height)
+    }else if(bkg2.x === 898 ){
+        ctx.drawImage(loadedImages.background, bkg.x, bkg.y, bkg.whidth, bkg.height)
+    }
     bkg.y += bkg.speedY
     bkg2.y += bkg2.speedY
 }
@@ -221,6 +227,8 @@ const checkCollision = () => {
                     bullet.toDelete = true
                     score++
                     document.getElementById('score').innerText = score
+                    
+                    
                 }
         })
     })
@@ -249,12 +257,21 @@ document.addEventListener("keydown", (event)=>{
     }
   })
    document.addEventListener("keydown", (event)=>{
-      if(event.key === " " && !gameOver){  
+      if(event.key === " " && !gameOver){
         arrayOfBullets.push(new Bullet(player1.x + 18, player1.y - 15))
         player1shoot.play()
       }
     
   })
+
+
+// Counter for Space bar 
+  const pressed = document.addEventListener("keydown", (e) =>{
+      if (e.key === " "){
+      SpaceKeyPressed++
+      //console.log(SpaceKeyPressed)
+  }})
+
 
  
 
@@ -306,10 +323,13 @@ return !bullet.toDelete
 
 checkCollision()
 drawBullets()
-//drawEnemy2()
-//moveEnemy2()
+drawEnemy2()
+moveEnemy2()
 
 moveBackground()
+setTimeout(() => {
+    document.getElementById('ratio').innerText = ((score / SpaceKeyPressed) * 100).toFixed(1)
+}, 4000); 
 
     requestAnimationFrameID = requestAnimationFrame(gameLoop)
 }
