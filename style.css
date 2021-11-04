@@ -55,7 +55,9 @@ body{
     border-style: none;
     color: white;
     background-color: rgba(255, 255, 255, 0);
+    cursor: pointer;
 }
+
 
 #intro-text{
     position: absolute;
@@ -87,4 +89,22 @@ body{
 #ratio{
     color: rgb(0, 255, 21);
     font-size: 32px;
+}
+
+#social_buttons{
+    margin-left: 1024px;
+    margin-top: 60px;
+}
+
+#github, #linkedin{
+    width: 40px;
+    background-color: white;
+    border-radius: 50px;
+    margin-right: 15px;
+    transition: 0.5s all;
+}
+
+#github:hover{
+    background-color: rgb(227, 255, 71);
+    
 }

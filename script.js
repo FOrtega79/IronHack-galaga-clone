@@ -2,7 +2,7 @@
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
-const NumberOfEnemies = Math.random()* 10 +1
+const NumberOfEnemies = Math.random()* 10
 let arrayOfEnemies = []
 let arrayOfBullets = []
 let arrayOfExplosions = []
@@ -12,12 +12,12 @@ let SpaceKeyPressed = 0
 let gameOver = false
 
 
-const soundTrack = new Audio("/sounds/8-bit-looping.flac")
+const soundTrack = new Audio("./sounds/8-bit-looping.flac")
 soundTrack.volume = 0.05
 soundTrack.preload ='auto'
 soundTrack.load()
 
-const player1shoot = new Audio("/sounds/FighterShot.mp3")
+const player1shoot = new Audio("./sounds/FighterShot.mp3")
 player1shoot.volume = 0.3
 player1shoot.preload = 'auto'
 player1shoot.load()
@@ -25,15 +25,16 @@ player1shoot.load()
 //Load images
 const loadedImages = {}
 const imageLinks = [
-    {link:"/images/galaga-bkg.png", name: 'background'},
-    {link: "/images/galaga-bkg2.png", name: 'background2'},
+    {link:"./images/galaga-bkg.png", name: 'background'},
+    {link: "./images/galaga-bkg2.png", name: 'background2'},
     {link:"./images/player-one.png", name: 'player1'},
-    {link:"/images/blue-fly.png", name: 'bluefly'},
-    {link:"/images/green-fly.png", name:'greenfly'}, 
-    {link: "/images/bullet.png", name:'bullet'},
-    {link: "/images/explosion-player1.png", name: 'player1dead'},
-    {link: "/images/xplo-sprites.png", name: 'xplosion'}, 
-    {link: "/images/game-over-splash.png", name: 'gameover'} 
+    {link:"./images/player-help.png", name: 'playerhelp'},
+    {link:"./images/blue-fly.png", name: 'bluefly'},
+    {link:"./images/green-fly.png", name:'greenfly'}, 
+    {link: "./images/bullet.png", name:'bullet'},
+    {link: "./images/explosion-player1.png", name: 'player1dead'},
+    {link: "./images/xplo-sprites.png", name: 'xplosion'}, 
+    {link: "./images/game-over-splash.png", name: 'gameover'} 
 ]
 // Loaded Images counter
 let counterForLoadedImages = 0
@@ -111,11 +112,11 @@ class Enemy{
 class Background{
     constructor(){
         this.x=0; 
-        this.y=0; 
+        this.y=-3800; 
         this.whidth=697;
-        this.height=898;
+        this.height=4694;
         this.speedX=0;
-        this.speedY=0.5;
+        this.speedY=0.2;
     }
 }
 
@@ -156,7 +157,7 @@ const greenEnemy = new Enemy()
 const bullet = new Bullet()
 
 
-
+//////////////////////////// SCORE Definition
 let score = 0
 
 
@@ -176,26 +177,21 @@ const Inbounds = () =>{
 }
 
 const createBlueEnemies = () => {
-
     createBlueEnemiesIntervalID = setInterval(() => {
         for (let i = 0; i < NumberOfEnemies; i++)
         {arrayOfEnemies.push(new Enemy())}}, 2000) 
 }
 
 
-
-   
-
-//createBlueEnemies()
-//console.log(createBlueEnemies)
-
 // Enemy2 
 const drawEnemy2 = ()=>{
-    ctx.drawImage(loadedImages.greenfly, greenEnemy.x, greenEnemy.y, greenEnemy.whidth, greenEnemy.height)
+    ctx.drawImage(loadedImages.playerhelp, 250, greenEnemy.y, 112.5, 54)
 }  
 const moveEnemy2 = ()=>{
-    greenEnemy.x += Math.floor(Math.random()*(greenEnemy.speedX)-0.2)
-    greenEnemy.y += Math.floor(Math.random()*(greenEnemy.speedY)+1)
+    greenEnemy.x += 0.5
+    //Math.floor(Math.random()*(greenEnemy.speedX)-0.2)
+    greenEnemy.y += 2.5
+    //Math.floor(Math.random()*(greenEnemy.speedY)+0.5)
 }
 // Background
 const moveBackground =()=>{
@@ -234,7 +230,12 @@ const checkCollision = () => {
     })
 }
 
+//Creamos una función que marque la wave1, luego la wave2, la wave 3....
+const waves = ()=> {
+    if (score > 50){
 
+    }
+}
 
 // Execution --
 
@@ -269,12 +270,11 @@ document.addEventListener("keydown", (event)=>{
   const pressed = document.addEventListener("keydown", (e) =>{
       if (e.key === " "){
       SpaceKeyPressed++
-      //console.log(SpaceKeyPressed)
   }})
 
 
  
-
+// GAME OVER function - resets the animations and clear the Canvas
   const endGame = () =>{
     arrayOfEnemies = []
     arrayOfBullets = []
