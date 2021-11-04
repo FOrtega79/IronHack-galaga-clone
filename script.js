@@ -12,8 +12,8 @@ let SpaceKeyPressed = 0
 let gameOver = false
 
 
-const soundTrack = new Audio("./sounds/8-bit-looping.flac")
-soundTrack.volume = 0.05
+const soundTrack = new Audio("./sounds/Rtype.mp3")
+soundTrack.volume = 0.6
 soundTrack.preload ='auto'
 soundTrack.load()
 
@@ -21,6 +21,13 @@ const player1shoot = new Audio("./sounds/FighterShot.mp3")
 player1shoot.volume = 0.3
 player1shoot.preload = 'auto'
 player1shoot.load()
+
+const gameEndScreen = new Audio("./sounds/gameOver.mp3")
+gameEndScreen.volume = 1
+gameEndScreen.preload ='auto'
+gameEndScreen.load()
+
+
 
 //Load images
 const loadedImages = {}
@@ -116,7 +123,7 @@ class Background{
         this.whidth=697;
         this.height=4694;
         this.speedX=0;
-        this.speedY=0.2;
+        this.speedY=0.5;
     }
 }
 
@@ -179,8 +186,10 @@ const Inbounds = () =>{
 const createBlueEnemies = () => {
     createBlueEnemiesIntervalID = setInterval(() => {
         for (let i = 0; i < NumberOfEnemies; i++)
-        {arrayOfEnemies.push(new Enemy())}}, 2000) 
+        {arrayOfEnemies.push(new Enemy())}}, 1000) 
 }
+
+
 
 
 // Enemy2 
@@ -189,19 +198,17 @@ const drawEnemy2 = ()=>{
 }  
 const moveEnemy2 = ()=>{
     greenEnemy.x += 0.5
-    //Math.floor(Math.random()*(greenEnemy.speedX)-0.2)
     greenEnemy.y += 2.5
-    //Math.floor(Math.random()*(greenEnemy.speedY)+0.5)
+
 }
 // Background
 const moveBackground =()=>{
-    if(bkg.x === 898){
-        ctx.drawImage(loadedImages.background2, bkg2.x, bkg2.y, bkg2.whidth, bkg2.height)
-    }else if(bkg2.x === 898 ){
-        ctx.drawImage(loadedImages.background, bkg.x, bkg.y, bkg.whidth, bkg.height)
-    }
+    if(bkg.y === 300){
+        bkg.speedY = 0
+    } else {
     bkg.y += bkg.speedY
-    bkg2.y += bkg2.speedY
+    
+    }
 }
 
 // Clear the Canvas
@@ -231,11 +238,7 @@ const checkCollision = () => {
 }
 
 //Creamos una función que marque la wave1, luego la wave2, la wave 3....
-const waves = ()=> {
-    if (score > 50){
 
-    }
-}
 
 // Execution --
 
@@ -287,6 +290,7 @@ document.addEventListener("keydown", (event)=>{
         cancelAnimationFrame(requestAnimationFrameID)
         clearCanvas()
         soundTrack.pause()
+        gameEndScreen.play()
         ctx.drawImage(loadedImages.gameover, 0, 0, 697, 898)
     }, 500)
 }
@@ -325,11 +329,11 @@ checkCollision()
 drawBullets()
 drawEnemy2()
 moveEnemy2()
-
 moveBackground()
+
 setTimeout(() => {
     document.getElementById('ratio').innerText = ((score / SpaceKeyPressed) * 100).toFixed(1)
-}, 4000); 
+}, 5000); 
 
     requestAnimationFrameID = requestAnimationFrame(gameLoop)
 }
