@@ -80,18 +80,18 @@ class Enemy{
         this.height=34;
         this.speedX= 2    //Math.random()* -1;
         this.speedY= 4     //Math.random()* 1;
-        this.angle = 0
+        this.angle = 180
         this.angleSpeed = 1
         this.toDelete=false
         //this.curve = Math.random() * 200 + 50
     }
     update(){  
-        this.x += Math.random()*5 - 2.5
+        this.x += Math.random()*5 - 2.3
         this.y += Math.random()*5 - 1
     }
 
     draw(){
-        ctx.drawImage(loadedImages.bluefly, this.x, this.y, this.whidth, this.height)
+        ctx.drawImage(loadedImages.greenfly, this.x, this.y, this.whidth, this.height)
     }
     checkIfInBoundaries(){
         if(this.y < 0 || this.x < 0 || this.x >= 697) this.toDelete = true

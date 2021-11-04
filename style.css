@@ -40,11 +40,11 @@ body{
 #keyboard-arrows{
     width: 150px;
     position: absolute;
-    margin-top: -250px;
+    margin-top: -256px;
     margin-left: 50px;
     background-color: rgba(255, 235, 205, 0.794);
-    padding-right:29px;
-    padding-left: 25px;
+    padding-right:43px;
+    padding-left: 43px;
 }
 
 #start-button{
